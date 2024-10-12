@@ -11,8 +11,8 @@ const App = () => {
       <Router>
         <div style={{ fontFamily: 'Verdana, Geneva, sans-serif' }}>
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/" element={<SearchBar />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/dashboard" element={<SearchBar />} />
           </Routes>
         </div>
       </Router>
