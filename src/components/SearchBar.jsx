@@ -53,7 +53,7 @@ const SearchBar = () => {
             if (newQuery.trim() !== '') {
                 setPage(0);
                 fetchSearchResults(newQuery, 0);
-                navigate(`/dashboard/?query=${newQuery}&page=0`);
+                navigate(`/?query=${newQuery}&page=0`);
             } else {
 
                 fetchSearchResults('', 0);
@@ -64,7 +64,7 @@ const SearchBar = () => {
     const handlePageChange = (newPage) => {
         setPage(newPage);
         fetchSearchResults(query, newPage);
-        navigate(`/dashboard/?query=${query}&page=${newPage}`);
+        navigate(`/?query=${query}&page=${newPage}`);
     };
 
     return (

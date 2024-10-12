@@ -11,8 +11,6 @@ export const fetchUserData = createAsyncThunk(
   }
 );
 
-
-
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
