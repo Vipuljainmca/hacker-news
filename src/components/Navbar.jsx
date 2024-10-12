@@ -2,7 +2,7 @@ import { AppBar, Toolbar, Typography, Box } from '@mui/material';
 
 const Navbar = () => {
     return (
-        <AppBar position="fixed" sx={{ backgroundColor: '#FF742B', height: '60px', padding: '0 20px' }}>
+        <AppBar position="relative" sx={{ backgroundColor: '#FF742B', height: '60px', padding: '0 20px' }}>
             <Toolbar sx={{ height: '60px' }}>
                 <Box
                     component="img"
