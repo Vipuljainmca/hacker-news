@@ -26,7 +26,7 @@ const Login = () => {
             if (result.error) {
                 setError("User Does not exist");
             } else {
-                navigate('/');
+                navigate('/dashboard');
             }
         } catch (err) {
             console.log(err || 'Login failed. Please try again.');
