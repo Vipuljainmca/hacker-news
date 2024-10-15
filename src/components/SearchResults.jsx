@@ -15,7 +15,7 @@ const SearchResults = ({ results = [], loading = false, page, totalPages, onPage
         const regex = new RegExp(`(${query})`, 'gi');
         const parts = text.split(regex);
         return parts.map((part, index) =>
-            regex.test(part) ? <span key={index} style={{ backgroundColor: 'yellow' }}>{part}</span> : part
+            regex.test(part) ? <span key={index} style={{ backgroundColor: 'yellow', fontWeight: '600', color: 'black' }}>{part}</span> : part
         );
     };
 
@@ -53,7 +53,7 @@ const SearchResults = ({ results = [], loading = false, page, totalPages, onPage
                     <ListItem key={item.objectID} sx={{ padding: '0' }}>
                         <ListItemText
                             primary={
-                                <Typography Typography variant="body1" component="span" sx={{ fontSize: { xs: '0.8rem', sm: '0.9rem' }, lineHeight: 'normal', color: 'rgb(0, 0, 0)', letterSpacing: 1 }}>
+                                <Typography Typography variant="body1" component="span" sx={{ fontSize: { xs: '0.8rem', sm: '0.9rem' }, lineHeight: 'normal', color: 'rgb(0, 0, 0)', letterSpacing: 0.6 }}>
                                     {item?.title &&
                                         <span style={{ fontWeight: 400 }}>
                                             {item?.title ? highlightText(item?.title, query) : 'No Title'}
@@ -83,7 +83,7 @@ const SearchResults = ({ results = [], loading = false, page, totalPages, onPage
                                             wordWrap: 'break-word',
                                         }}
                                     >
-                                        {item.points} points | {item.author} | {timeAgo(item.created_at)} | {item.num_comments} comments
+                                        {item.points} points | {item.author  ? highlightText(item?.author, query) : 'unknown author'} | {timeAgo(item.created_at)} | {item.num_comments} comments
 
                                     </Typography>
                                     <Typography>

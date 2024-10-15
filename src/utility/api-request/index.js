@@ -1,10 +1,10 @@
 import axios from "axios";
-import { handleErrorResponse } from "../common";
+import { handleErrorResponse, makeURL } from "../common";
 
 export const getAPI = async function (URL, successFn, errorFn, params = {}) {
     axios({
         method: "get",
-        url: URL,
+        url: makeURL(URL),
         params: params,
     })
         .then(function (response) {

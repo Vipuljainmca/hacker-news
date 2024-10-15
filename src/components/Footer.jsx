@@ -2,13 +2,13 @@ import { Container, Grid, Link, Typography, Box } from '@mui/material';
 
 const Footer = () => {
     const links = [
-        { text: 'About', url: '#' },
-        { text: 'Setting', url: '#' },
-        { text: 'Help', url: '#' },
-        { text: 'API Documentation', url: '#' },
-        { text: 'Hacker News', url: '#' },
-        { text: 'Fork/Contribute', url: '#' },
-        { text: 'Cool Apps', url: '#' },
+        { text: 'About', url: 'https://hn.algolia.com/about' },
+        { text: 'Setting', url: 'https://hn.algolia.com/settings' },
+        { text: 'Help', url: 'https://hn.algolia.com/help' },
+        { text: 'API Documentation', url: 'https://hn.algolia.com/api' },
+        { text: 'Hacker News', url: 'https://news.ycombinator.com/' },
+        { text: 'Fork/Contribute', url: 'https://github.com/algolia/hn-search' },
+        { text: 'Cool Apps', url: 'https://hn.algolia.com/cool_apps' },
     ];
 
     return (

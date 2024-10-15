@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchUserData } from '../redux/slices/userSlice';
+import { fetchUserData, login } from '../redux/slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 import {
     Container,
@@ -22,10 +22,12 @@ const Login = () => {
         setError('');
         try {
             const result = await dispatch(fetchUserData(username));
-
+            console.log(result);
+            
             if (result.error) {
                 setError("User Does not exist");
             } else {
+                dispatch(login({ username })); 
                 navigate('/');
             }
         } catch (err) {
@@ -82,4 +84,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Login;   

@@ -6,21 +6,22 @@ export const SUCCESS_MESSAGE = "success";
 
 export const TYPEMENU = [
     { id: 'all', value: 'All' },
-    { id: 'stories', value: 'Stories' },
+    { id: 'story', value: 'Stories' },
     { id: 'comment', value: 'Comment' },
     { id: 'ask-hn', value: 'Ask HN' },
     { id: 'show-hn', value: 'Show HN' },
-    { id: 'launch-hn', value: 'Launch HN' },
-    { id: 'jobs', value: 'Jobs' },
-    { id: 'polls', value: 'Polls' },
+    { id: 'launch_hn', value: 'Launch HN' },
+    { id: 'job', value: 'Jobs' },
+    { id: 'pollopt', value: 'Polls' },
+    { id: 'front_page', value: 'Front Page' },
 ];
 export const DATERANGE = [
-    { id: 'all-time', value: 'All Time' },
-    { id: 'last-twenty-four-hours', value: 'Last 24h' },
-    { id: 'past-week', value: 'Past Week' },
-    { id: 'past-month', value: 'Past Month' },
-    { id: 'past-year', value: 'Past Year' },
-    { id: 'custom-range', value: 'Custom Range' },
+    { id: 'all', value: 'All Time' },
+    { id: 'last24h', value: 'Last 24h' },
+    { id: 'pastWeek', value: 'Past Week' },
+    { id: 'pastMonth', value: 'Past Month' },
+    { id: 'pastYear', value: 'Past Year' },
+    { id: 'custom', value: 'Custom Range' },
 ];
 export const SORTBY = [
     { id: 'byDate', value: 'Date' },

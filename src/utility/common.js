@@ -1,3 +1,4 @@
+import { BASE_URL } from "../constants/api";
 import { ERROR_MESSAGE_400, ERROR_MESSAGE_401, ERROR_MESSAGE_404, ERROR_MESSAGE_500 } from "../constants/message";
 
 export const handleErrorResponse = function (error) {
@@ -36,4 +37,18 @@ export const handleErrorResponse = function (error) {
     } else {
         // console.log(ERROR_INTERNET_CONNECTIVITY);
     }
+};
+
+
+export const makeURL = function (URL) {
+    return BASE_URL + "/" + URL;
+};
+
+
+export const interpolate = function (theString, argumentArray) {
+    var regex = /%s/;
+    var _r = function (p, c) {
+        return p.replace(regex, c);
+    };
+    return argumentArray.reduce(_r, theString);
 };
