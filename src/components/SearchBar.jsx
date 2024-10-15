@@ -121,7 +121,7 @@ const SearchBar = () => {
                 </Toolbar>
             </AppBar>
 
-            <Box sx={{ paddingTop: '10px', width: '100%', paddingRight: '20px', paddingLeft: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Box sx={{ width: '100%', paddingRight: '20px', paddingLeft: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Filters
                     type={type}
                     setType={setType}
@@ -138,7 +138,7 @@ const SearchBar = () => {
                 </Typography>
             </Box>
 
-            <Box sx={{ paddingTop: '10px', width: '100%', paddingLeft: '10px' }}>
+            <Box sx={{ width: '100%', paddingLeft: '10px' }}>
                 <SearchResults
                     results={results}
                     loading={loading}

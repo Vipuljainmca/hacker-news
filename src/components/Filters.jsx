@@ -113,7 +113,7 @@ const Filters = ({ type = 'story', setType, sortBy = 'byPopularity', setSortBy, 
                                 setAnchorEl(null)
                             }
                         }}
-                        onClick={handlePopoverOpen}
+                        onClick={() => handlePopoverOpen(dateRange)}
                         sx={{
                             fontSize: '14px',
                             padding: '0 4px 0 8px',
