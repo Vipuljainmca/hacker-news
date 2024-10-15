@@ -27,7 +27,6 @@ const SearchBar = () => {
     const [isFirstLoad, setIsFirstLoad] = useState(true);
 
     const username = useSelector((state) => state.auth.username);
-    console.log(username);
     
 
     const [customDate, setCustomDate] = useState({

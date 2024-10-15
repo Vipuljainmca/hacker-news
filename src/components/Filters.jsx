@@ -33,6 +33,7 @@ const Filters = ({ type = 'story', setType, sortBy = 'byPopularity', setSortBy, 
     };
 
     const handlePopoverOpen = (event) => {
+        console.log(event);
         setAnchorEl(event.currentTarget);
     };
 

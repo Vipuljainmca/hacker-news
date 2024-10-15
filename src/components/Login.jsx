@@ -22,7 +22,6 @@ const Login = () => {
         setError('');
         try {
             const result = await dispatch(fetchUserData(username));
-            console.log(result);
             
             if (result.error) {
                 setError("User Does not exist");

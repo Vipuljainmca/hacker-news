@@ -19,7 +19,6 @@ const authSlice = createSlice({
   },
   reducers: {
     login(state, action) {
-      console.log('Logging in:', action.payload); // Debug log
       state.username = action.payload.username;
       localStorage.setItem('username', action.payload.username);
     },
