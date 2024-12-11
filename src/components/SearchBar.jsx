@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchResults from './SearchResults';
-import { AppBar, Box, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import SearchInput from './SearchInput';
 import { SettingsOutlined } from '@mui/icons-material';
 import Filters from './Filters';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { clearUser } from '../redux/slices/userSlice';
 
 const SearchBar = () => {
     const navigate = useNavigate();
@@ -17,6 +18,7 @@ const SearchBar = () => {
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const dispatch = useDispatch();
 
     const debounceTimeoutRef = useRef(null);
 
@@ -26,7 +28,8 @@ const SearchBar = () => {
 
     const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-    const username = useSelector((state) => state.auth.username);
+    // const username = useSelector((state) => state.auth.username);
+    const username = useSelector((state) => state?.auth?.user?.name); // Assuming 'name' holds the user's full name
     
 
     const [customDate, setCustomDate] = useState({
@@ -72,7 +75,12 @@ const SearchBar = () => {
             // navigate(`/?query=${query}&tags=${type}&page=${page}&numericFilters=created_at_i>${dateRange}`);
             navigate(`/?query=${query}&tags=${type}&page=${page}`);
         }
-    }, [type, dateRange]);
+    }, [type, dateRange, sortBy]);
+
+    const handleLogout = () => {
+        dispatch(clearUser());
+        navigate('/login');
+    };
 
     const handleChange = (e) => {
         const newQuery = e.target.value;
@@ -117,7 +125,16 @@ const SearchBar = () => {
                     <Box sx={{ flexGrow: 1, height: '50px', ml: 2, mr: 3, mt: 1 }}>
                         <SearchInput query={query} handleChange={handleChange} />
                     </Box>
-                    <SettingsOutlined sx={{ color: 'black', ml: 2, cursor: "pointer" }} fontSize='large' />
+                    {/* <SettingsOutlined sx={{ color: 'black', ml: 2, cursor: "pointer" }} fontSize='large' /> */}
+                    <Button 
+                        variant="contained" 
+                        color="none" 
+                        style={{border: "1px solid white", }}
+                        onClick={handleLogout}
+                        sx={{ ml: 2 }}
+                    >
+                        Logout
+                    </Button>
                 </Toolbar>
             </AppBar>
 
