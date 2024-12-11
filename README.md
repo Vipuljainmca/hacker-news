@@ -1,8 +1,31 @@
-# React + Vite
+Hacker News Clone
+A simple web application that mimics the functionality of the popular Hacker News site using React and Vite.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Features
+Fetches and displays news articles from the Hacker News API
+Allows users to vote on stories
+A minimalist design for easy navigation
+Technologies
+React: JavaScript library for building user interfaces
+Vite: A build tool that provides fast development and hot module replacement (HMR)
+ESLint: For maintaining consistent code quality
+Setup Instructions
+Clone the repository:
 
-Currently, two official plugins are available:
+bash
+Copy code
+git clone https://github.com/Vipuljainmca/hacker-news.git
+Install dependencies:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+bash
+Copy code
+npm install
+Run the application:
+
+bash
+Copy code
+npm run dev
+The app will be running at http://localhost:5173.
+
+License
+MIT License.
