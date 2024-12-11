@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
-import { auth } from '../constants/firebase'; // Ensure you initialize Firebase in this file
+import { auth } from '../constants/firebase';
 import Navbar from './Navbar';
 import { setUser } from '../redux/slices/userSlice';
 
