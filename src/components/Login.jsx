@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 import { auth } from '../constants/firebase';
 import Navbar from './Navbar';
 import { setUser } from '../redux/slices/userSlice';
+import { updateProfile } from 'firebase/auth';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -52,6 +53,13 @@ const Login = () => {
         setError('');
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
+            const user = userCredential.user;
+            // await user.updateProfile({
+            //     displayName: form.name,
+            // });
+            await updateProfile(user, {
+                displayName: form.name,
+            });
             const token = await userCredential.user.getIdToken();
             dispatch(setUser({
                 name: form.name,

@@ -6,7 +6,7 @@ import SearchBar from './SearchBar';
 
 const RouteHome = () => {
     const isAuthenticated = useSelector((state) => state?.auth?.isAuthenticated);
-    console.log("isAuth", isAuthenticated)
+    
 
     return (
        

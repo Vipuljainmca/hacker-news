@@ -16,7 +16,7 @@ const SearchBar = () => {
     const [totalResult, setTotalResult] = useState(null);
     const [timeTaken, setTimeTaken] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const dispatch = useDispatch();
 
@@ -31,24 +31,36 @@ const SearchBar = () => {
     // const username = useSelector((state) => state.auth.username);
     const username = useSelector((state) => state?.auth?.user?.name); // Assuming 'name' holds the user's full name
     
+    function getTimestamp(dateString) {
+        // Parse the date string and convert to Unix timestamp in seconds
+        return Math.floor(new Date(dateString).getTime() / 1000);
+    }
 
     const [customDate, setCustomDate] = useState({
         startDate: '',
         endDate: '',
     });
 
-    const fetchSearchResults = async (page = 0, searchQuery = '', tags = 'story', searchByDate = 'all', withFilters = false) => {
+    const fetchSearchResults = async (page = 1, searchQuery = '', tags = 'story', searchByDate = 'all', withFilters = false) => {
         try {
             setLoading(true);
-            const url = withFilters
+            var url = withFilters
                 ?
-                searchByDate
+                // searchByDate
+                sortBy !== "byPopularity"
                     // ? `https://hn.algolia.com/api/v1/search_by_date?query=${searchQuery}&tags=${tags}&page=${page}&numericFilters=created_at_i>${searchByDate}`
-                    ? `https://hn.algolia.com/api/v1/search_by_date?query=${searchQuery}&tags=${tags}&page=${page}`
-                    : `https://hn.algolia.com/api/v1/search?query=${searchQuery}&tags=${tags}&page=${page}`
+                    ? `https://hn.algolia.com/api/v1/search_by_date?query=${searchQuery}&tags=${tags}&page=${page-1}`
+                    : `https://hn.algolia.com/api/v1/search?query=${searchQuery}&tags=${tags}&page=${page-1}`
                 : `https://hn.algolia.com/api/v1/search`;
-
+            if(dateRange !== "all" && dateRange !=="custom"){
+                url = url + `&numericFilters=created_at_i>${dateRange}`
+            }
+            if(dateRange === "custom" && customDate?.startDate !== "" && customDate?.endDate !== ""){
+                url = url + `&numericFilters=created_at_i>=${getTimestamp(customDate?.startDate)},created_at_i<=${getTimestamp(customDate?.endDate)}`
+            }
             const response = await axios.get(url);
+            navigate("/?" + url.slice(30,url.length))
+
             const data = response.data;
 
             setResults(data.hits);
@@ -56,7 +68,6 @@ const SearchBar = () => {
             setTimeTaken(data?.processingTimeMS);
             setTotalPages(data.nbPages);
         } catch (error) {
-            console.error('Error fetching search results:', error);
         } finally {
             setLoading(false);
         }
@@ -64,7 +75,7 @@ const SearchBar = () => {
 
     useEffect(() => {
         if (isFirstLoad) {
-            fetchSearchResults(0, '', '', '', false);
+            fetchSearchResults(1, '', '', '', false);
             setIsFirstLoad(false);
         }
     }, [isFirstLoad]);
@@ -73,7 +84,7 @@ const SearchBar = () => {
         if (!isFirstLoad) {
             fetchSearchResults(page, query, type, dateRange, true);
             // navigate(`/?query=${query}&tags=${type}&page=${page}&numericFilters=created_at_i>${dateRange}`);
-            navigate(`/?query=${query}&tags=${type}&page=${page}`);
+            // navigate(`/?query=${query}&tags=${type}&page=${page}`);
         }
     }, [type, dateRange, sortBy]);
 
@@ -92,11 +103,11 @@ const SearchBar = () => {
 
         debounceTimeoutRef.current = setTimeout(() => {
             if (newQuery.trim() !== '') {
-                setPage(0);
-                fetchSearchResults(0, newQuery, type, dateRange, true);
-                navigate(`/?query=${newQuery}&tags=${type}`);
+                setPage(1);
+                fetchSearchResults(1, newQuery, type, dateRange, true);
+                // navigate(`/?query=${newQuery}&tags=${type}`);
             } else {
-                fetchSearchResults(0, '', '', '', false);
+                fetchSearchResults(1, '', '', '', false);
             }
         }, 500);
     };
@@ -104,7 +115,7 @@ const SearchBar = () => {
     const handlePageChange = (newPage) => {
         setPage(newPage);
         fetchSearchResults(newPage, query, type, dateRange, true);
-        navigate(`/?query=${query}&tags=${type}&page=${newPage}`);
+        // navigate(`/?query=${query}&tags=${type}&page=${newPage-1}`);
     };
 
     return (
@@ -140,6 +151,8 @@ const SearchBar = () => {
 
             <Box sx={{ width: '100%', paddingRight: '20px', paddingLeft: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Filters
+                    page={page}
+                    query={query}
                     type={type}
                     setType={setType}
                     sortBy={sortBy}
@@ -148,6 +161,7 @@ const SearchBar = () => {
                     setDateRange={setDateRange}
                     customDate={customDate}
                     setCustomDate={setCustomDate}
+                    fetchSearchResults={fetchSearchResults}
                 />
 
                 <Typography sx={{ color: 'black', fontSize: '12px', fontWeight: 400, textAlign: 'right', paddingRight: 10 }}>

@@ -11,9 +11,10 @@ import {
 import { DATERANGE, SORTBY, TYPEMENU } from '../constants/data';
 import { useState } from 'react';
 
-const Filters = ({ type = 'story', setType, sortBy = 'byPopularity', setSortBy, dateRange = 'all', setDateRange, customDate, setCustomDate }) => {
+const Filters = ({fetchSearchResults, type = 'story',page,query, setType, sortBy = 'byPopularity', setSortBy, dateRange = 'all', setDateRange, customDate, setCustomDate }) => {
 
     const [anchorEl, setAnchorEl] = useState(null);
+
 
     const handleCustomDateChange = (e) => {
         setCustomDate({
@@ -24,6 +25,7 @@ const Filters = ({ type = 'story', setType, sortBy = 'byPopularity', setSortBy, 
 
     const handleApply = () => {
         setAnchorEl(null);
+        fetchSearchResults(page, query, type, dateRange, true);
     };
 
     const handleCancel = () => {
@@ -32,9 +34,8 @@ const Filters = ({ type = 'story', setType, sortBy = 'byPopularity', setSortBy, 
         setAnchorEl(null);
     };
 
-    const handlePopoverOpen = (event) => {
-        console.log(event);
-        setAnchorEl(event.currentTarget);
+    const handlePopoverOpen = () => {
+        // setAnchorEl(event.currentTarget);
     };
 
     const handlePopoverClose = () => {
@@ -112,8 +113,11 @@ const Filters = ({ type = 'story', setType, sortBy = 'byPopularity', setSortBy, 
                                 setCustomDate({ startDate: '', endDate: '' });
                                 setAnchorEl(null)
                             }
+                            if(e.target.value === "custom"){
+                                setAnchorEl(true);
+                            }
                         }}
-                        onClick={() => handlePopoverOpen(dateRange)}
+                        onClick={(e) => handlePopoverOpen(e)}
                         sx={{
                             fontSize: '14px',
                             padding: '0 4px 0 8px',
@@ -123,7 +127,7 @@ const Filters = ({ type = 'story', setType, sortBy = 'byPopularity', setSortBy, 
                         }}
                     >
                         {DATERANGE.map((item) => (
-                            <MenuItem key={item.id} value={item.id}>
+                            <MenuItem key={item.id} value={item.timestamp}>
                                 {item.value}
                             </MenuItem>
                         ))}
@@ -136,7 +140,7 @@ const Filters = ({ type = 'story', setType, sortBy = 'byPopularity', setSortBy, 
                     anchorEl={anchorEl}
                     onClose={handlePopoverClose}
                     anchorOrigin={{
-                        vertical: 'bottom',
+                        vertical: 'top',
                         horizontal: 'center',
                     }}
                     transformOrigin={{
@@ -144,7 +148,9 @@ const Filters = ({ type = 'story', setType, sortBy = 'byPopularity', setSortBy, 
                         horizontal: 'center',
                     }}
                 >
-                    {dateRange === 'custom' && (
+                    {
+                    // dateRange === 'custom' && 
+                    (
                         <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                             <Typography variant="h6">Custom Date Range</Typography>
                             <Box sx={{ display: 'flex', gap: 2 }}>
