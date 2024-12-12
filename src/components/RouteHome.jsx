@@ -15,8 +15,10 @@ const RouteHome = () => {
 
         {!isAuthenticated && <Route path="/" element={<Navigate to="/login" />} />}
 
-        <Route path="/login" element={<Login />} />
         <Route path="/" element={<SearchBar />} />
+                    <Route path="/search" element={<SearchBar />} />
+                    <Route path="/search_by_date" element={<SearchBar />} />
+                    <Route path="*" element={<Navigate to="/" />} />
 
         {!isAuthenticated && <Route path="*" element={<Navigate to="/login" />} />}
         {isAuthenticated && <Route path="*" element={<Navigate to="/" />} />}

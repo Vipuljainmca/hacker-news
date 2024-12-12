@@ -59,7 +59,7 @@ const SearchBar = () => {
             }
 
             const response = await axios.get(url);
-            // navigate('/?' + url.slice(30, url.length));
+            navigate('/' + url.slice(30, url.length));
 
             const data = response.data;
             setResults(data.hits);
