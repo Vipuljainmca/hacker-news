@@ -9,25 +9,21 @@ const RouteHome = () => {
 
     return (
         <Routes>
-            {isAuthenticated && (
-                <Route path="/login" element={<Navigate to="/" />} />
-            )}
+            {!isAuthenticated && <Route path="/login" element={<Login />} />}
+            {!isAuthenticated && <Route path="*" element={<Navigate to="/login" />} />}
 
-            {!isAuthenticated && (
-                <Route path="/" element={<Navigate to="/login" />} />
-            )}
 
             <Route path="/" element={<SearchBar />} />
             <Route path="/search" element={<SearchBar />} />
             <Route path="/search_by_date" element={<SearchBar />} />
             <Route path="*" element={<Navigate to="/" />} />
 
-            {!isAuthenticated && (
+            {/* {!isAuthenticated && (
                 <Route path="*" element={<Navigate to="/login" />} />
             )}
             {isAuthenticated && (
                 <Route path="*" element={<Navigate to="/" />} />
-            )}
+            )} */}
         </Routes>
     );
 };
