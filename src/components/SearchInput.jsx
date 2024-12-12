@@ -1,7 +1,7 @@
 import { Box, InputBase, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
-const SearchInput = ({ query, handleChange }) => {
+const SearchInput = ({ query, handleChange, isMobile }) => {
     return (
         <Box
             sx={{
@@ -37,7 +37,7 @@ const SearchInput = ({ query, handleChange }) => {
                     backgroundColor: '#fff',
                 }}
             />
-            <Typography variant="body2" sx={{
+           {!isMobile && <Typography variant="body2" sx={{
                 marginRight: '8px',
                 color: 'rgba(33, 36, 61, .5)',
                 fontSize: '12px',
@@ -49,13 +49,13 @@ const SearchInput = ({ query, handleChange }) => {
                 userSelect: 'none',
             }}>
                 Search By
-            </Typography>
-            <Box
+            </Typography>}
+           {!isMobile && <Box
                 component="img"
                 src="https://hn.algolia.com/public/38a9c67b12016b52267071c530ff2e78.svg"
                 alt="Logo"
                 sx={{ height: '20px', marginLeft: '4px', marginRight: '4px' }}
-            />
+            />}
         </Box>
     );
 };

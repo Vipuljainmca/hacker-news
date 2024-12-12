@@ -67,7 +67,7 @@ const SearchResults = ({
         <Box
             sx={{
                 paddingBottom: "10px",
-                width: "100%",
+                // width: "100%",
                 pr: { xs: "5px", sm: "10px" },
                 pl: { xs: "5px", sm: "10px" },
             }}>
@@ -121,6 +121,7 @@ const SearchResults = ({
                                                           query
                                                       )}
                                             </Link>
+                                        
                                         </span>
                                     ) : (
                                         <span style={{ fontWeight: 400 }}>
@@ -134,19 +135,25 @@ const SearchResults = ({
                                                       query
                                                   )}
                                         </span>
+                                        
                                     )}
+                                    <span> {" "}(
                                     {item?.url ||
-                                        (item?.story_url && (
-                                            <span
-                                                style={{
-                                                    marginLeft: "4px",
-                                                    fontSize: {
-                                                        xs: "0.6rem",
-                                                        sm: "0.7rem",
-                                                    },
-                                                    letterSpacing: 1,
-                                                }}>
-                                                (
+                                        item?.story_url && 
+                                            
+                                            // <span
+                                            //     style={{
+                                            //         marginLeft: "4px",
+                                            //         color: "red !important",
+                                            //         fontWeight: 510,
+                                            //         fontSize: {
+                                            //             xs: "0.6rem",
+                                            //             sm: "0.7rem",
+                                            //         },
+                                            //         letterSpacing: 1,
+                                            //     }}>
+                                            
+                                             
                                                 <Link
                                                     style={{
                                                         color: "#828282",
@@ -156,21 +163,21 @@ const SearchResults = ({
                                                         item.url ||
                                                         item?.story_url
                                                     }
+                                                    // href={item.url || item?.story_url}
                                                     target="_blank"
-                                                    rel="noopener noreferrer">
+                                                    rel="noopener noreferrer"
+                                                    >
+                                                  
                                                     {item?.url
-                                                        ? highlightText(
-                                                              item?.url,
-                                                              query
-                                                          )
-                                                        : highlightText(
-                                                              item?.story_url,
-                                                              query
-                                                          )}
+                                                        ? item?.url
+                                                        :   item?.story_url} 
                                                 </Link>
-                                                )
-                                            </span>
-                                        ))}
+                                              
+                                                
+                                            // </span>
+                                        }
+                                    )</span>
+                                       
                                 </Typography>
                             }
                             secondary={

@@ -1,13 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchResults from './SearchResults';
-import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Toolbar, Typography, Grid } from '@mui/material';
 import SearchInput from './SearchInput';
-import { SettingsOutlined } from '@mui/icons-material';
 import Filters from './Filters';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { clearUser } from '../redux/slices/userSlice';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const SearchBar = () => {
     const navigate = useNavigate();
@@ -28,11 +29,9 @@ const SearchBar = () => {
 
     const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-    // const username = useSelector((state) => state.auth.username);
-    const username = useSelector((state) => state?.auth?.user?.name); // Assuming 'name' holds the user's full name
-    
+    const username = useSelector((state) => state?.auth?.user?.name);
+
     function getTimestamp(dateString) {
-        // Parse the date string and convert to Unix timestamp in seconds
         return Math.floor(new Date(dateString).getTime() / 1000);
     }
 
@@ -41,28 +40,28 @@ const SearchBar = () => {
         endDate: '',
     });
 
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     const fetchSearchResults = async (page = 1, searchQuery = '', tags = 'story', searchByDate = 'all', withFilters = false) => {
         try {
             setLoading(true);
-            var url = withFilters
-                ?
-                // searchByDate
-                sortBy !== "byPopularity"
-                    // ? `https://hn.algolia.com/api/v1/search_by_date?query=${searchQuery}&tags=${tags}&page=${page}&numericFilters=created_at_i>${searchByDate}`
-                    ? `https://hn.algolia.com/api/v1/search_by_date?query=${searchQuery}&tags=${tags}&page=${page-1}`
-                    : `https://hn.algolia.com/api/v1/search?query=${searchQuery}&tags=${tags}&page=${page-1}`
+            let url = withFilters
+                ? sortBy !== 'byPopularity'
+                    ? `https://hn.algolia.com/api/v1/search_by_date?query=${searchQuery}&tags=${tags}&page=${page - 1}`
+                    : `https://hn.algolia.com/api/v1/search?query=${searchQuery}&tags=${tags}&page=${page - 1}`
                 : `https://hn.algolia.com/api/v1/search`;
-            if(dateRange !== "all" && dateRange !=="custom"){
-                url = url + `&numericFilters=created_at_i>${dateRange}`
+            if (dateRange !== 'all' && dateRange !== 'custom') {
+                url += `&numericFilters=created_at_i>${dateRange}`;
             }
-            if(dateRange === "custom" && customDate?.startDate !== "" && customDate?.endDate !== ""){
-                url = url + `&numericFilters=created_at_i>=${getTimestamp(customDate?.startDate)},created_at_i<=${getTimestamp(customDate?.endDate)}`
+            if (dateRange === 'custom' && customDate?.startDate && customDate?.endDate) {
+                url += `&numericFilters=created_at_i>=${getTimestamp(customDate?.startDate)},created_at_i<=${getTimestamp(customDate?.endDate)}`;
             }
+
             const response = await axios.get(url);
-            navigate("/?" + url.slice(30,url.length))
+            // navigate('/?' + url.slice(30, url.length));
 
             const data = response.data;
-
             setResults(data.hits);
             setTotalResult(data?.nbHits);
             setTimeTaken(data?.processingTimeMS);
@@ -83,8 +82,6 @@ const SearchBar = () => {
     useEffect(() => {
         if (!isFirstLoad) {
             fetchSearchResults(page, query, type, dateRange, true);
-            // navigate(`/?query=${query}&tags=${type}&page=${page}&numericFilters=created_at_i>${dateRange}`);
-            // navigate(`/?query=${query}&tags=${type}&page=${page}`);
         }
     }, [type, dateRange, sortBy]);
 
@@ -105,7 +102,6 @@ const SearchBar = () => {
             if (newQuery.trim() !== '') {
                 setPage(1);
                 fetchSearchResults(1, newQuery, type, dateRange, true);
-                // navigate(`/?query=${newQuery}&tags=${type}`);
             } else {
                 fetchSearchResults(1, '', '', '', false);
             }
@@ -115,42 +111,61 @@ const SearchBar = () => {
     const handlePageChange = (newPage) => {
         setPage(newPage);
         fetchSearchResults(newPage, query, type, dateRange, true);
-        // navigate(`/?query=${query}&tags=${type}&page=${newPage-1}`);
     };
 
     return (
         <div style={{ overflowX: 'hidden' }}>
             <AppBar position="relative" sx={{ backgroundColor: '#FF742B', zIndex: 1201, width: '100%' }}>
-                <Toolbar sx={{ display: 'flex', alignItems: 'center', height: '60px' }}>
-                    <Typography variant="h3" sx={{ fontSize: '1.2rem', color: '#ffffff', marginRight: '16px' }}>
+                <Toolbar sx={{ display: 'flex', alignItems: 'center', height: '60px', flexWrap: 'nowrap' }}>
+                    <Typography
+                        variant="h3"
+                        sx={{ fontSize: isMobile ? '1rem' : '1.2rem', color: '#ffffff', marginRight: '16px' }}
+                    >
                         Hi,<br />{username}
                     </Typography>
-                    <Box component="img" src="https://hn.algolia.com/public/899d76bbc312122ee66aaaff7f933d13.png" alt="Hacker News Logo" sx={{ height: '50px', mr: 2, cursor: 'pointer' }} 
-                    onClick={() => navigate('/')}
+                    <Box
+                        component="img"
+                        src="https://hn.algolia.com/public/899d76bbc312122ee66aaaff7f933d13.png"
+                        alt="Hacker News Logo"
+                        sx={{ height: '40px', mr: 2, cursor: 'pointer' }}
+                        onClick={() => navigate('/')}
                     />
-                    <Typography variant="h3" sx={{ fontSize: '1.2rem', color: '#000000', marginRight: '16px', cursor: 'pointer' }}
+                   {!isMobile && <Typography
+                        variant="h3"
+                        sx={{ fontSize: isMobile ? '0.9rem' : '1.2rem', color: '#000000', marginRight: '16px', cursor: 'pointer' }}
                         onClick={() => navigate('/')}
                     >
                         Search<br />Hacker News
-                    </Typography>
+                    </Typography>}
                     <Box sx={{ flexGrow: 1, height: '50px', ml: 2, mr: 3, mt: 1 }}>
-                        <SearchInput query={query} handleChange={handleChange} />
+                        <SearchInput query={query} handleChange={handleChange} isMobile={isMobile} />
                     </Box>
-                    {/* <SettingsOutlined sx={{ color: 'black', ml: 2, cursor: "pointer" }} fontSize='large' /> */}
-                    <Button 
-                        variant="contained" 
-                        color="none" 
-                        style={{border: "1px solid white", }}
-                        onClick={handleLogout}
-                        sx={{ ml: 2 }}
-                    >
-                        Logout
-                    </Button>
+                    {!isMobile && (
+                        <Button
+                            variant="contained"
+                            color="none"
+                            style={{ border: '1px solid white' }}
+                            onClick={handleLogout}
+                            sx={{ ml: 2 }}
+                        >
+                            Logout
+                        </Button>
+                    )}
                 </Toolbar>
             </AppBar>
 
-            <Box sx={{ width: '100%', paddingRight: '20px', paddingLeft: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Box
+                sx={{
+                    // width: '100%',
+                    padding: isMobile ? '10px' : '20px',
+                    display: 'flex',
+                    flexDirection: isMobile ? 'column' : 'row',
+                    // alignItems: 'center',
+                    justifyContent: isMobile ? "flex-start" : 'space-between',
+                }}
+            >
                 <Filters
+                isMobile={isMobile}
                     page={page}
                     query={query}
                     type={type}
@@ -164,12 +179,20 @@ const SearchBar = () => {
                     fetchSearchResults={fetchSearchResults}
                 />
 
-                <Typography sx={{ color: 'black', fontSize: '12px', fontWeight: 400, textAlign: 'right', paddingRight: 10 }}>
+                <Typography
+                    sx={{
+                        color: 'black',
+                        fontSize: '12px',
+                        fontWeight: 400,
+                        textAlign: isMobile ? 'center' : 'right',
+                        paddingRight: isMobile ? 0 : 10,
+                    }}
+                >
                     {totalResult?.toLocaleString()} results ({(timeTaken / 1000).toFixed(3)} seconds)
                 </Typography>
             </Box>
 
-            <Box sx={{ width: '100%', paddingLeft: '10px' }}>
+            <Box sx={{ width: '100%', paddingLeft: isMobile ? '5px' : '10px' }}>
                 <SearchResults
                     results={results}
                     loading={loading}
@@ -179,6 +202,18 @@ const SearchBar = () => {
                     query={query}
                 />
             </Box>
+
+            {isMobile && (
+                <Button
+                    variant="contained"
+                    color="none"
+                    fullWidth
+                    style={{ marginTop: '10px' }}
+                    onClick={handleLogout}
+                >
+                    Logout
+                </Button>
+            )}
         </div>
     );
 };
